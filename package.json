@@ -1,0 +1,41 @@
+{
+  "name": "almacen-prototipo",
+  "version": "1.0.0",
+  "main": "electron/main.js",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "electron:dev": "concurrently \"vite\" \"wait-on http://localhost:5173 && cross-env NODE_ENV=development electron .\"",
+    "electron:build": "npm run build && electron-builder"
+  },
+  "build": {
+    "appId": "com.almacen.os",
+    "productName": "AlmacénOS",
+    "directories": {
+      "output": "release"
+    },
+    "files": [
+      "dist/**/*",
+      "electron/**/*"
+    ],
+    "win": {
+      "target": "nsis"
+    }
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^6.0.1",
+    "concurrently": "^9.2.1",
+    "cross-env": "^10.1.0",
+    "electron": "^41.0.3",
+    "electron-builder": "^26.8.1",
+    "vite": "^8.0.1",
+    "wait-on": "^9.0.4"
+  },
+  "dependencies": {
+    "lucide-react": "^0.577.0",
+    "react": "^19.2.4",
+    "react-dom": "^19.2.4",
+    "recharts": "^3.8.0"
+  }
+}
