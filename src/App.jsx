@@ -18,7 +18,7 @@ const C = {
   accent:      "#e8a020",
   accentMuted: "#6b4a0e",
   text:        "#f0ebe0",
-  muted:       "#9a8a72",
+  muted:       "#b8a898",
   green:       "#4ade80",
   red:         "#f87171",
 };
@@ -31,7 +31,7 @@ const btnPrimary = {
   borderRadius: 8,
   cursor: "pointer",
   fontWeight: 700,
-  fontSize: 14,
+  fontSize: 16,
   fontFamily: "inherit",
 };
 const btnSecondary = {
@@ -41,7 +41,7 @@ const btnSecondary = {
   border: `1px solid ${C.border}`,
   borderRadius: 8,
   cursor: "pointer",
-  fontSize: 14,
+  fontSize: 16,
   fontFamily: "inherit",
 };
 const btnSmall = {
@@ -98,93 +98,53 @@ function useLS(key, init) {
 // ─── SIDEBAR ──────────────────────────────────────────────────────────────────
 function Sidebar({ page, setPage }) {
   const nav = [
-    { id: "venta",      icon: ShoppingCart, label: "Nueva Venta"  },
-    { id: "inventario", icon: Package,      label: "Inventario"   },
-    { id: "historial",  icon: ClipboardList,label: "Historial"    },
-    { id: "reportes",   icon: TrendingUp,   label: "Reportes"     },
+    { id: "venta",       icon: ShoppingCart, label: "Nueva Venta",  color: "#4ade80", bg: "#1a2e1a", border: "#2d5a2d", activeBg: "#2a4a2a", activeBorder: "#4ade80", iconBg: "rgba(74,222,128,0.15)"  },
+    { id: "inventario",  icon: Package,      label: "Inventario",   color: "#60a5fa", bg: "#1a2038", border: "#2d3d70", activeBg: "#1e2d5a", activeBorder: "#60a5fa", iconBg: "rgba(96,165,250,0.15)"  },
+    { id: "historial",   icon: ClipboardList,label: "Historial",    color: "#e8a020", bg: "#2a1f10", border: "#6b4a0e", activeBg: "#3d2a10", activeBorder: "#e8a020", iconBg: "rgba(232,160,32,0.15)"  },
+    { id: "reportes",    icon: TrendingUp,   label: "Reportes",     color: "#a78bfa", bg: "#1e1a2e", border: "#4a3a70", activeBg: "#2d2444", activeBorder: "#a78bfa", iconBg: "rgba(167,139,250,0.15)" },
   ];
+
   return (
-    <div
-      style={{
-        width: 220,
-        background: C.surface,
-        borderRight: `1px solid ${C.border}`,
-        display: "flex",
-        flexDirection: "column",
-        minHeight: "100vh",
-        flexShrink: 0,
-      }}
-    >
-      <div
-        style={{
-          padding: "22px 20px",
-          borderBottom: `1px solid ${C.border}`,
-          display: "flex",
-          alignItems: "center",
-          gap: 10,
-        }}
-      >
-        <Store size={22} color={C.accent} />
-        <div>
-          <div
-            style={{
-              color: C.text,
-              fontWeight: 800,
-              fontSize: 15,
-              fontFamily: "Syne, sans-serif",
-              letterSpacing: "-0.3px",
-            }}
-          >
-            AlmacénOS
-          </div>
-          <div style={{ color: C.muted, fontSize: 11 }}>Punto de Venta</div>
-        </div>
+    <div style={{ width: 160, background: C.bg, borderRight: `1px solid ${C.border}`, display: "flex", flexDirection: "column", minHeight: "100vh", padding: "14px 10px", gap: 10, boxSizing: "border-box", flexShrink: 0 }}>
+      
+      {/* Brand */}
+      <div style={{ textAlign: "center", paddingBottom: 14, borderBottom: `1px solid ${C.border}`, marginBottom: 4 }}>
+        <div style={{ fontFamily: "Comico, sans-serif", fontWeight: 800, fontSize: 30, color: C.accent, letterSpacing: "-0.3px" }}>M & B</div>
       </div>
 
-      <nav style={{ padding: "10px 0", flex: 1 }}>
-        {nav.map(({ id, icon: Icon, label }) => (
-          <button
+      {/* Nav cards */}
+      {nav.map(({ id, icon: Icon, label, color, bg, border, activeBg, activeBorder, iconBg }) => {
+        const isActive = page === id;
+        return (
+          <div
             key={id}
             onClick={() => setPage(id)}
             style={{
-              width: "100%",
-              padding: "11px 20px",
+              borderRadius: 12,
+              padding: "16px 8px 12px",
               display: "flex",
+              flexDirection: "column",
               alignItems: "center",
-              gap: 12,
-              background: page === id ? C.card : "transparent",
-              borderLeft:
-                page === id
-                  ? `3px solid ${C.accent}`
-                  : "3px solid transparent",
-              border: "none",
-              borderTop: "none",
-              borderRight: "none",
-              borderBottom: "none",
-              borderLeft: page === id ? `3px solid ${C.accent}` : `3px solid transparent`,
+              gap: 8,
               cursor: "pointer",
-              color: page === id ? C.text : C.muted,
-              fontSize: 14,
-              fontFamily: "inherit",
-              textAlign: "left",
+              background: isActive ? activeBg : bg,
+              border: `1.5px solid ${isActive ? activeBorder : border}`,
               transition: "all 0.15s",
             }}
           >
-            <Icon size={17} color={page === id ? C.accent : C.muted} />
-            {label}
-          </button>
-        ))}
-      </nav>
+            <div style={{ width: 44, height: 44, borderRadius: 10, background: iconBg, display: "flex", alignItems: "center", justifyContent: "center" }}>
+              <Icon size={24} color={color} strokeWidth={1.8} />
+            </div>
+            <span style={{ fontFamily: "DM Sans, sans-serif", fontSize: 15, fontWeight: 600, color, textAlign: "center", letterSpacing: "0.03em" }}>
+              {label}
+            </span>
+          </div>
+        );
+      })}
 
-      <div
-        style={{
-          padding: "14px 20px",
-          borderTop: `1px solid ${C.border}`,
-          color: C.muted,
-          fontSize: 11,
-        }}
-      >
-        v0.1 · Prototipo
+      {/* Version */}
+      <div style={{ marginTop: "auto", textAlign: "center", fontSize: 9, color: C.border, paddingTop: 8, borderTop: `1px solid ${C.border}` }}>
+        v0.2 · Prototipo
       </div>
     </div>
   );
@@ -205,7 +165,7 @@ function Toast({ msg, type }) {
         color: isOk ? C.green : C.red,
         padding: "10px 18px",
         borderRadius: 8,
-        fontSize: 13,
+        fontSize: 15,
         border: `1px solid ${isOk ? C.green : C.red}`,
         boxShadow: "0 4px 20px rgba(0,0,0,0.5)",
         fontFamily: "inherit",
@@ -306,7 +266,7 @@ function PageVenta({ productos, addVenta }) {
       <div style={{ flex: 1, display: "flex", flexDirection: "column", gap: 16, minWidth: 0 }}>
         {/* Scanner */}
         <div style={{ background: C.card, border: `1px solid ${C.border}`, borderRadius: 12, padding: 18 }}>
-          <div style={{ color: C.muted, fontSize: 11, marginBottom: 8, display: "flex", alignItems: "center", gap: 6, fontWeight: 600, letterSpacing: "0.05em" }}>
+          <div style={{ color: C.muted, fontSize: 15, marginBottom: 8, display: "flex", alignItems: "center", gap: 6, fontWeight: 600, letterSpacing: "0.05em" }}>
             <Scan size={13} /> ESCANEAR CÓDIGO DE BARRA
           </div>
           <input
@@ -322,40 +282,40 @@ function PageVenta({ productos, addVenta }) {
               borderRadius: 8,
               padding: "10px 14px",
               color: C.text,
-              fontSize: 14,
+              fontSize: 16,
               fontFamily: "inherit",
               outline: "none",
               boxSizing: "border-box",
             }}
           />
-          <div style={{ color: C.muted, fontSize: 11, marginTop: 7 }}>
+          <div style={{ color: C.muted, fontSize: 15, marginTop: 7 }}>
             La pistola USB funciona automáticamente como teclado.
           </div>
         </div>
 
         {/* Cart */}
         <div style={{ background: C.card, border: `1px solid ${C.border}`, borderRadius: 12, flex: 1, overflow: "hidden", display: "flex", flexDirection: "column" }}>
-          <div style={{ padding: "13px 20px", borderBottom: `1px solid ${C.border}`, color: C.muted, fontSize: 11, fontWeight: 600, letterSpacing: "0.05em", display: "flex", alignItems: "center", gap: 6 }}>
+          <div style={{ padding: "13px 20px", borderBottom: `1px solid ${C.border}`, color: C.muted, fontSize: 15, fontWeight: 600, letterSpacing: "0.05em", display: "flex", alignItems: "center", gap: 6 }}>
             <ShoppingCart size={13} /> PRODUCTOS ({cart.length})
           </div>
           <div style={{ flex: 1, overflowY: "auto" }}>
             {cart.length === 0 ? (
-              <div style={{ color: C.muted, textAlign: "center", padding: 48, fontSize: 14 }}>
+              <div style={{ color: C.muted, textAlign: "center", padding: 48, fontSize: 16 }}>
                 Sin productos. Escanea un código de barra para comenzar.
               </div>
             ) : (
               cart.map((item) => (
                 <div key={item.id} style={{ display: "flex", alignItems: "center", padding: "11px 20px", gap: 12, borderBottom: `1px solid ${C.border}` }}>
                   <div style={{ flex: 1, minWidth: 0 }}>
-                    <div style={{ color: C.text, fontSize: 14, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{item.nombre}</div>
-                    <div style={{ color: C.muted, fontSize: 12 }}>{clp(item.precio)} c/u</div>
+                    <div style={{ color: C.text, fontSize: 16, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>{item.nombre}</div>
+                    <div style={{ color: C.muted, fontSize: 16 }}>{clp(item.precio)} c/u</div>
                   </div>
                   <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
                     <button onClick={() => qty(item.id, item.cantidad - 1)} style={{ ...btnSmall }}>−</button>
-                    <span style={{ color: C.text, fontSize: 14, minWidth: 22, textAlign: "center" }}>{item.cantidad}</span>
+                    <span style={{ color: C.text, fontSize: 16, minWidth: 22, textAlign: "center" }}>{item.cantidad}</span>
                     <button onClick={() => qty(item.id, item.cantidad + 1)} style={{ ...btnSmall }}>+</button>
                   </div>
-                  <div style={{ color: C.text, fontSize: 14, fontWeight: 600, minWidth: 80, textAlign: "right" }}>{clp(item.subtotal)}</div>
+                  <div style={{ color: C.text, fontSize: 16, fontWeight: 600, minWidth: 80, textAlign: "right" }}>{clp(item.subtotal)}</div>
                   <button onClick={() => remove(item.id)} style={{ background: "none", border: "none", cursor: "pointer", color: C.muted, padding: 4 }}>
                     <Trash2 size={14} />
                   </button>
@@ -369,12 +329,12 @@ function PageVenta({ productos, addVenta }) {
       {/* Right: summary */}
       <div style={{ width: 260, flexShrink: 0 }}>
         <div style={{ background: C.card, border: `1px solid ${C.border}`, borderRadius: 12, padding: 20 }}>
-          <div style={{ color: C.muted, fontSize: 11, fontWeight: 600, letterSpacing: "0.05em", marginBottom: 18 }}>RESUMEN</div>
+          <div style={{ color: C.muted, fontSize: 15, fontWeight: 600, letterSpacing: "0.05em", marginBottom: 18 }}>RESUMEN</div>
 
           {[["Neto", neto], ["IVA (19%)", iva]].map(([label, val]) => (
             <div key={label} style={{ display: "flex", justifyContent: "space-between", marginBottom: 10 }}>
-              <span style={{ color: C.muted, fontSize: 14 }}>{label}</span>
-              <span style={{ color: C.text, fontSize: 14 }}>{clp(val)}</span>
+              <span style={{ color: C.muted, fontSize: 16 }}>{label}</span>
+              <span style={{ color: C.text, fontSize: 16 }}>{clp(val)}</span>
             </div>
           ))}
 
@@ -382,11 +342,11 @@ function PageVenta({ productos, addVenta }) {
 
           <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 18, alignItems: "baseline" }}>
             <span style={{ color: C.text, fontSize: 16, fontWeight: 700 }}>Total</span>
-            <span style={{ color: C.accent, fontSize: 24, fontWeight: 800, fontFamily: "Syne, sans-serif" }}>{clp(total)}</span>
+            <span style={{ color: C.accent, fontSize: 34, fontWeight: 400, fontFamily: "'Bebas Neue', sans-serif", letterSpacing: "1px" }}>{clp(total)}</span>
           </div>
 
           <div style={{ background: C.surface, borderRadius: 8, padding: "10px 14px", marginBottom: 18 }}>
-            <div style={{ color: C.muted, fontSize: 11, marginBottom: 5, fontWeight: 600, letterSpacing: "0.04em" }}>GANANCIA ESTIMADA</div>
+            <div style={{ color: C.muted, fontSize: 15, marginBottom: 5, fontWeight: 600, letterSpacing: "0.04em" }}>GANANCIA ESTIMADA</div>
             <div style={{ color: C.green, fontSize: 20, fontWeight: 700 }}>{clp(ganancia)}</div>
           </div>
 
@@ -473,7 +433,7 @@ function PageInventario({ productos, setProductos }) {
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder="Buscar por nombre o código…"
-            style={{ width: "100%", background: C.card, border: `1px solid ${C.border}`, borderRadius: 8, padding: "9px 12px 9px 36px", color: C.text, fontSize: 14, fontFamily: "inherit", outline: "none", boxSizing: "border-box" }}
+            style={{ width: "100%", background: C.card, border: `1px solid ${C.border}`, borderRadius: 8, padding: "9px 12px 9px 36px", color: C.text, fontSize: 16, fontFamily: "inherit", outline: "none", boxSizing: "border-box" }}
           />
         </div>
         <button onClick={() => open()} style={{ ...btnPrimary, display: "flex", alignItems: "center", gap: 7 }}>
@@ -483,22 +443,22 @@ function PageInventario({ productos, setProductos }) {
 
       {/* Table */}
       <div style={{ background: C.card, border: `1px solid ${C.border}`, borderRadius: 12, flex: 1, overflow: "hidden", display: "flex", flexDirection: "column" }}>
-        <div style={{ display: "grid", gridTemplateColumns: "2fr 1.5fr 1fr 1fr 1fr 72px", padding: "10px 20px", borderBottom: `1px solid ${C.border}`, color: C.muted, fontSize: 11, fontWeight: 600, letterSpacing: "0.05em" }}>
+        <div style={{ display: "grid", gridTemplateColumns: "2fr 1.5fr 1fr 1fr 1fr 72px", padding: "10px 20px", borderBottom: `1px solid ${C.border}`, color: C.muted, fontSize: 15, fontWeight: 600, letterSpacing: "0.05em" }}>
           <span>PRODUCTO</span><span>CÓDIGO</span><span>COSTO</span><span>% GANANCIA</span><span>P. VENTA</span><span></span>
         </div>
         <div style={{ overflowY: "auto", flex: 1 }}>
           {filtered.length === 0 ? (
-            <div style={{ color: C.muted, textAlign: "center", padding: 48, fontSize: 14 }}>
+            <div style={{ color: C.muted, textAlign: "center", padding: 48, fontSize: 16 }}>
               {search ? "Sin resultados." : "No hay productos aún. Agrega el primero."}
             </div>
           ) : (
             filtered.map((p) => (
               <div key={p.id} style={{ display: "grid", gridTemplateColumns: "2fr 1.5fr 1fr 1fr 1fr 72px", padding: "12px 20px", borderBottom: `1px solid ${C.border}`, alignItems: "center" }}>
-                <span style={{ color: C.text, fontSize: 14 }}>{p.nombre}</span>
-                <span style={{ color: C.muted, fontSize: 13, fontFamily: "monospace" }}>{p.codigoBarra}</span>
-                <span style={{ color: C.muted, fontSize: 13 }}>{clp(p.precioCosto)}</span>
-                <span style={{ color: C.accent, fontSize: 13, fontWeight: 600 }}>{p.porcentajeGanancia}%</span>
-                <span style={{ color: C.text, fontSize: 14, fontWeight: 600 }}>{clp(p.precioVenta)}</span>
+                <span style={{ color: C.text, fontSize: 16 }}>{p.nombre}</span>
+                <span style={{ color: C.muted, fontSize: 15, fontFamily: "monospace" }}>{p.codigoBarra}</span>
+                <span style={{ color: C.muted, fontSize: 15 }}>{clp(p.precioCosto)}</span>
+                <span style={{ color: C.accent, fontSize: 15, fontWeight: 600 }}>{p.porcentajeGanancia}%</span>
+                <span style={{ color: C.text, fontSize: 16, fontWeight: 600 }}>{clp(p.precioVenta)}</span>
                 <div style={{ display: "flex", gap: 6 }}>
                   <button onClick={() => open(p)} style={{ ...btnSmall }}><Edit2 size={13} color={C.muted} /></button>
                   <button onClick={() => del(p.id)} style={{ ...btnSmall, background: "#2d1515" }}><Trash2 size={13} color={C.red} /></button>
@@ -529,26 +489,26 @@ function PageInventario({ productos, setProductos }) {
               { label: "% de Ganancia", key: "porcentaje", placeholder: "Ej: 30", type: "number" },
             ].map(({ label, key, placeholder, type = "text" }) => (
               <div key={key} style={{ marginBottom: 14 }}>
-                <label style={{ color: C.muted, fontSize: 12, display: "block", marginBottom: 6, fontWeight: 600 }}>{label}</label>
+                <label style={{ color: C.muted, fontSize: 16, display: "block", marginBottom: 6, fontWeight: 600 }}>{label}</label>
                 <input
                   type={type}
                   value={form[key]}
                   onChange={(e) => setForm((f) => ({ ...f, [key]: e.target.value }))}
                   placeholder={placeholder}
-                  style={{ width: "100%", background: C.surface, border: `1px solid ${C.border}`, borderRadius: 8, padding: "9px 12px", color: C.text, fontSize: 14, fontFamily: "inherit", outline: "none", boxSizing: "border-box" }}
+                  style={{ width: "100%", background: C.surface, border: `1px solid ${C.border}`, borderRadius: 8, padding: "11px 14px", color: C.text, fontSize: 16, fontFamily: "inherit", outline: "none", boxSizing: "border-box" }}
                 />
               </div>
             ))}
 
             {previewPV !== null && (
               <div style={{ background: C.surface, borderRadius: 8, padding: "10px 14px", marginBottom: 14, display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                <span style={{ color: C.muted, fontSize: 13 }}>Precio de Venta calculado</span>
+                <span style={{ color: C.muted, fontSize: 15 }}>Precio de Venta calculado</span>
                 <span style={{ color: C.accent, fontWeight: 700, fontSize: 17 }}>{clp(previewPV)}</span>
               </div>
             )}
 
             {error && (
-              <div style={{ color: C.red, fontSize: 12, marginBottom: 12, display: "flex", alignItems: "center", gap: 6 }}>
+              <div style={{ color: C.red, fontSize: 16, marginBottom: 12, display: "flex", alignItems: "center", gap: 6 }}>
                 <AlertCircle size={13} /> {error}
               </div>
             )}
@@ -582,7 +542,7 @@ function PageHistorial({ ventas }) {
       </h2>
 
       {sorted.length === 0 ? (
-        <div style={{ background: C.card, border: `1px solid ${C.border}`, borderRadius: 12, padding: 48, textAlign: "center", color: C.muted, fontSize: 14 }}>
+        <div style={{ background: C.card, border: `1px solid ${C.border}`, borderRadius: 12, padding: 48, textAlign: "center", color: C.muted, fontSize: 16 }}>
           No hay ventas registradas aún.
         </div>
       ) : (
@@ -594,20 +554,20 @@ function PageHistorial({ ventas }) {
             >
               <Receipt size={18} color={C.accent} />
               <div style={{ flex: 1 }}>
-                <div style={{ color: C.text, fontSize: 14, fontWeight: 500 }}>{fmt(v.fecha)}</div>
-                <div style={{ color: C.muted, fontSize: 12 }}>{v.items.length} producto(s)</div>
+                <div style={{ color: C.text, fontSize: 16, fontWeight: 500 }}>{fmt(v.fecha)}</div>
+                <div style={{ color: C.muted, fontSize: 16 }}>{v.items.length} producto(s)</div>
               </div>
               <div style={{ textAlign: "right" }}>
                 <div style={{ color: C.accent, fontWeight: 700, fontSize: 16 }}>{clp(v.total)}</div>
-                <div style={{ color: C.green, fontSize: 12 }}>+{clp(v.ganancia)} ganancia</div>
+                <div style={{ color: C.green, fontSize: 16 }}>+{clp(v.ganancia)} ganancia</div>
               </div>
-              <span style={{ color: C.muted, fontSize: 12 }}>{expanded === v.id ? "▲" : "▼"}</span>
+              <span style={{ color: C.muted, fontSize: 16 }}>{expanded === v.id ? "▲" : "▼"}</span>
             </div>
 
             {expanded === v.id && (
               <div style={{ borderTop: `1px solid ${C.border}`, padding: "16px 20px", background: C.surface }}>
                 {v.items.map((item, i) => (
-                  <div key={i} style={{ display: "flex", justifyContent: "space-between", marginBottom: 8, fontSize: 13 }}>
+                  <div key={i} style={{ display: "flex", justifyContent: "space-between", marginBottom: 8, fontSize: 15 }}>
                     <span style={{ color: C.muted }}>{item.cantidad}× {item.nombre}</span>
                     <span style={{ color: C.text }}>{clp(item.subtotal)}</span>
                   </div>
@@ -638,6 +598,7 @@ function PageReportes({ ventas }) {
   const sum = (vs) => ({
     total:    vs.reduce((s, v) => s + v.total, 0),
     ganancia: vs.reduce((s, v) => s + v.ganancia, 0),
+    iva:      vs.reduce((s, v) => s + v.iva, 0),
     count:    vs.length,
   });
 
@@ -674,9 +635,9 @@ function PageReportes({ ventas }) {
 
   const StatCard = ({ label, value, sub, color }) => (
     <div style={{ background: C.card, border: `1px solid ${C.border}`, borderRadius: 12, padding: 20, flex: 1 }}>
-      <div style={{ color: C.muted, fontSize: 11, fontWeight: 600, letterSpacing: "0.05em", marginBottom: 10 }}>{label}</div>
-      <div style={{ color: color || C.text, fontSize: 26, fontWeight: 800, fontFamily: "Syne, sans-serif", marginBottom: 4 }}>{value}</div>
-      {sub && <div style={{ color: C.muted, fontSize: 12 }}>{sub}</div>}
+      <div style={{ color: C.muted, fontSize: 15, fontWeight: 600, letterSpacing: "0.05em", marginBottom: 10 }}>{label}</div>
+      <div style={{ color: color || C.text, fontSize: 32, fontWeight: 400, fontFamily: "'Bebas Neue', sans-serif", letterSpacing: "1px", marginBottom: 4 }}>{value}</div>
+      {sub && <div style={{ color: C.muted, fontSize: 16 }}>{sub}</div>}
     </div>
   );
 
@@ -696,7 +657,7 @@ function PageReportes({ ventas }) {
               background: view === id ? C.accent : "transparent",
               color: view === id ? "#18140f" : C.muted,
               fontWeight: view === id ? 700 : 400,
-              fontSize: 13,
+              fontSize: 15,
               fontFamily: "inherit",
               transition: "all 0.15s",
             }}
@@ -710,26 +671,27 @@ function PageReportes({ ventas }) {
       <div style={{ display: "flex", gap: 16 }}>
         <StatCard label="VENTAS TOTALES" value={clp(stats.total)} sub={`${stats.count} transacción${stats.count !== 1 ? "es" : ""}`} color={C.accent} />
         <StatCard label="GANANCIA NETA" value={clp(stats.ganancia)} sub={stats.total > 0 ? `${Math.round((stats.ganancia / stats.total) * 100)}% sobre ventas` : "Sin ventas"} color={C.green} />
+        <StatCard label="IVA ACUMULADO" value={clp(stats.iva)} sub="19% incluido en ventas" color={C.red} />
         <StatCard label="COSTO DE LO VENDIDO" value={clp(stats.total - stats.ganancia)} color={C.text} />
       </div>
 
       {/* Chart */}
       <div style={{ background: C.card, border: `1px solid ${C.border}`, borderRadius: 12, padding: "20px 20px 12px" }}>
-        <div style={{ color: C.muted, fontSize: 11, fontWeight: 600, letterSpacing: "0.05em", marginBottom: 18 }}>
+        <div style={{ color: C.muted, fontSize: 15, fontWeight: 600, letterSpacing: "0.05em", marginBottom: 18 }}>
           {view === "day" ? "VENTAS Y GANANCIA — ÚLTIMOS 7 DÍAS" : "VENTAS Y GANANCIA — ÚLTIMOS 6 MESES"}
         </div>
         <ResponsiveContainer width="100%" height={230}>
           <BarChart data={chartData} barGap={4} barCategoryGap="30%">
             <CartesianGrid strokeDasharray="3 3" stroke={C.border} vertical={false} />
-            <XAxis dataKey="name" tick={{ fill: C.muted, fontSize: 12 }} axisLine={false} tickLine={false} />
+            <XAxis dataKey="name" tick={{ fill: C.muted, fontSize: 16 }} axisLine={false} tickLine={false} />
             <YAxis
-              tick={{ fill: C.muted, fontSize: 11 }}
+              tick={{ fill: C.muted, fontSize: 15 }}
               axisLine={false}
               tickLine={false}
               tickFormatter={(v) => (v >= 1000 ? `$${(v / 1000).toFixed(0)}k` : `$${v}`)}
             />
             <Tooltip
-              contentStyle={{ background: C.surface, border: `1px solid ${C.border}`, borderRadius: 8, color: C.text, fontSize: 12 }}
+              contentStyle={{ background: C.surface, border: `1px solid ${C.border}`, borderRadius: 8, color: C.text, fontSize: 16 }}
               formatter={(v, name) => [clp(v), name === "ventas" ? "Ventas" : "Ganancia"]}
               cursor={{ fill: "rgba(255,255,255,0.03)" }}
             />
@@ -739,7 +701,7 @@ function PageReportes({ ventas }) {
         </ResponsiveContainer>
         <div style={{ display: "flex", gap: 20, paddingTop: 4 }}>
           {[["Ventas totales", C.accentMuted], ["Ganancia", C.accent]].map(([label, color]) => (
-            <div key={label} style={{ display: "flex", alignItems: "center", gap: 6, fontSize: 12, color: C.muted }}>
+            <div key={label} style={{ display: "flex", alignItems: "center", gap: 6, fontSize: 16, color: C.muted }}>
               <div style={{ width: 10, height: 10, background: color, borderRadius: 2 }} />
               {label}
             </div>
@@ -758,9 +720,14 @@ export default function App() {
 
   useEffect(() => {
     const link = document.createElement("link");
-    link.href = "https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=DM+Sans:ital,wght@0,400;0,500;0,600&display=swap";
+    link.href = "https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=DM+Sans:ital,wght@0,400;0,500;0,600&family=Bebas+Neue&display=swap";
     link.rel  = "stylesheet";
     document.head.appendChild(link);
+
+    const link2 = document.createElement("link");
+    link2.href = "https://api.fontshare.com/v2/css?f[]=comico@400&display=swap";
+    link2.rel = "stylesheet";
+    document.head.appendChild(link2);
   }, []);
 
   return (
