@@ -295,8 +295,13 @@ function PageVenta({ productos, addVenta }) {
 
         {/* Cart */}
         <div style={{ background: C.card, border: `1px solid ${C.border}`, borderRadius: 12, flex: 1, overflow: "hidden", display: "flex", flexDirection: "column" }}>
-          <div style={{ padding: "13px 20px", borderBottom: `1px solid ${C.border}`, color: C.muted, fontSize: 15, fontWeight: 600, letterSpacing: "0.05em", display: "flex", alignItems: "center", gap: 6 }}>
-            <ShoppingCart size={13} /> PRODUCTOS ({cart.length})
+          <div style={{ padding: "13px 20px", borderBottom: `1px solid ${C.border}`, display: "flex", alignItems: "center", gap: 12 }}>
+            <div style={{ flex: 1, display: "flex", alignItems: "center", gap: 6, color: C.muted, fontSize: 15, fontWeight: 600, letterSpacing: "0.05em" }}>
+              <ShoppingCart size={20} /> PRODUCTOS ({cart.length})
+            </div>
+            <div style={{ color: C.muted, fontSize: 15, fontWeight: 600, letterSpacing: "0.05em", textAlign: "center", minWidth: 70 }}>CANTIDAD</div>
+            <div style={{ minWidth: 80 }} />
+            <div style={{ width: 28 }} />
           </div>
           <div style={{ flex: 1, overflowY: "auto" }}>
             {cart.length === 0 ? (
@@ -312,12 +317,12 @@ function PageVenta({ productos, addVenta }) {
                   </div>
                   <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
                     <button onClick={() => qty(item.id, item.cantidad - 1)} style={{ ...btnSmall }}>−</button>
-                    <span style={{ color: C.text, fontSize: 16, minWidth: 22, textAlign: "center" }}>{item.cantidad}</span>
+                    <span style={{ color: C.text, fontSize: 34, minWidth: 22, textAlign: "center" }}>{item.cantidad}</span>
                     <button onClick={() => qty(item.id, item.cantidad + 1)} style={{ ...btnSmall }}>+</button>
                   </div>
-                  <div style={{ color: C.text, fontSize: 16, fontWeight: 600, minWidth: 80, textAlign: "right" }}>{clp(item.subtotal)}</div>
+                  <div style={{ color: C.text, fontSize: 34, fontWeight: 400, minWidth: 80, textAlign: "right", fontFamily: "'Bebas Neue', sans-serif", letterSpacing: "1px" }}>{clp(item.subtotal)}</div>
                   <button onClick={() => remove(item.id)} style={{ background: "none", border: "none", cursor: "pointer", color: C.muted, padding: 4 }}>
-                    <Trash2 size={14} />
+                    <Trash2 size={20} />
                   </button>
                 </div>
               ))
@@ -333,21 +338,16 @@ function PageVenta({ productos, addVenta }) {
 
           {[["Neto", neto], ["IVA (19%)", iva]].map(([label, val]) => (
             <div key={label} style={{ display: "flex", justifyContent: "space-between", marginBottom: 10 }}>
-              <span style={{ color: C.muted, fontSize: 16 }}>{label}</span>
-              <span style={{ color: C.text, fontSize: 16 }}>{clp(val)}</span>
+              <span style={{ color: C.muted, fontSize: 34 }}>{label}</span>
+              <span style={{ color: C.text, fontSize: 34, fontWeight: 400, fontFamily: "'Bebas Neue', sans-serif", letterSpacing: "1px" }}>{clp(val)}</span>
             </div>
           ))}
 
           <div style={{ height: 1, background: C.border, margin: "14px 0" }} />
 
           <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 18, alignItems: "baseline" }}>
-            <span style={{ color: C.text, fontSize: 16, fontWeight: 700 }}>Total</span>
+            <span style={{ color: C.text, fontSize: 34, fontWeight: 700 }}>Total</span>
             <span style={{ color: C.accent, fontSize: 34, fontWeight: 400, fontFamily: "'Bebas Neue', sans-serif", letterSpacing: "1px" }}>{clp(total)}</span>
-          </div>
-
-          <div style={{ background: C.surface, borderRadius: 8, padding: "10px 14px", marginBottom: 18 }}>
-            <div style={{ color: C.muted, fontSize: 15, marginBottom: 5, fontWeight: 600, letterSpacing: "0.04em" }}>GANANCIA ESTIMADA</div>
-            <div style={{ color: C.green, fontSize: 20, fontWeight: 700 }}>{clp(ganancia)}</div>
           </div>
 
           <button
