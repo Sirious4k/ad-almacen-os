@@ -1,0 +1,927 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>AlmacénOS — Demo Portfolio</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=DM+Sans:wght@400;500;600&family=Bebas+Neue&display=swap" rel="stylesheet"/>
+<link href="https://api.fontshare.com/v2/css?f[]=comico@400&display=swap" rel="stylesheet"/>
+<style>
+  :root {
+    --bg:      #18140f;
+    --surface: #221d16;
+    --card:    #2b2419;
+    --border:  #3a3025;
+    --accent:  #e8a020;
+    --muted-accent: #6b4a0e;
+    --text:    #f0ebe0;
+    --muted:   #b8a898;
+    --green:   #4ade80;
+    --red:     #f87171;
+    --violet:  #a78bfa;
+    --blue:    #60a5fa;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    overflow-x: hidden;
+  }
+
+  /* ── HERO ── */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 60px 24px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 80% 60% at 50% 0%, rgba(232,160,32,0.13) 0%, transparent 70%),
+      radial-gradient(ellipse 40% 40% at 80% 80%, rgba(74,222,128,0.07) 0%, transparent 60%);
+    pointer-events: none;
+  }
+
+  .hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(232,160,32,0.1);
+    border: 1px solid rgba(232,160,32,0.3);
+    border-radius: 100px;
+    padding: 6px 16px;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--accent);
+    letter-spacing: 0.08em;
+    margin-bottom: 32px;
+    animation: fadeUp 0.6s ease both;
+  }
+
+  .hero-title {
+    font-family: 'Comico', sans-serif;
+    font-size: clamp(56px, 10vw, 110px);
+    color: var(--accent);
+    line-height: 1;
+    margin-bottom: 12px;
+    animation: fadeUp 0.6s 0.1s ease both;
+  }
+
+  .hero-sub {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(14px, 2.5vw, 22px);
+    color: var(--muted);
+    margin-bottom: 24px;
+    animation: fadeUp 0.6s 0.2s ease both;
+  }
+
+  .hero-desc {
+    max-width: 560px;
+    font-size: 16px;
+    color: var(--muted);
+    line-height: 1.7;
+    margin-bottom: 40px;
+    animation: fadeUp 0.6s 0.3s ease both;
+  }
+
+  .hero-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+    margin-bottom: 48px;
+    animation: fadeUp 0.6s 0.4s ease both;
+  }
+
+  .tag {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 6px 14px;
+    font-size: 13px;
+    color: var(--muted);
+    font-weight: 500;
+  }
+  .tag.green { border-color: rgba(74,222,128,0.3); color: var(--green); background: rgba(74,222,128,0.07); }
+  .tag.blue  { border-color: rgba(96,165,250,0.3); color: var(--blue); background: rgba(96,165,250,0.07); }
+
+  .scroll-hint {
+    position: absolute;
+    bottom: 32px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    color: var(--muted);
+    font-size: 12px;
+    animation: fadeUp 0.6s 0.8s ease both;
+  }
+  .scroll-dot {
+    width: 6px;
+    height: 6px;
+    background: var(--accent);
+    border-radius: 50%;
+    animation: bounce 1.4s infinite;
+  }
+
+  /* ── SECTION ── */
+  section {
+    padding: 80px 24px;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  .section-label {
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    color: var(--accent);
+    margin-bottom: 12px;
+  }
+
+  .section-title {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(28px, 4vw, 42px);
+    font-weight: 800;
+    margin-bottom: 16px;
+    line-height: 1.15;
+  }
+
+  .section-desc {
+    color: var(--muted);
+    font-size: 16px;
+    line-height: 1.7;
+    max-width: 560px;
+    margin-bottom: 52px;
+  }
+
+  /* ── APP DEMO ── */
+  .app-shell {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 40px 80px rgba(0,0,0,0.6);
+  }
+
+  .app-topbar {
+    background: var(--card);
+    border-bottom: 1px solid var(--border);
+    padding: 12px 20px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .dot { width:12px; height:12px; border-radius:50%; }
+
+  .app-body { display: flex; }
+
+  /* Sidebar */
+  .app-sidebar {
+    width: 110px;
+    background: var(--bg);
+    border-right: 1px solid var(--border);
+    padding: 14px 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .app-brand {
+    text-align: center;
+    padding-bottom: 14px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 4px;
+  }
+  .app-brand-name {
+    font-family: 'Comico', sans-serif;
+    font-size: 14px;
+    color: var(--accent);
+  }
+  .app-brand-sub { font-size: 9px; color: var(--muted-accent); margin-top: 2px; }
+
+  .nav-card {
+    border-radius: 10px;
+    padding: 12px 6px 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    cursor: pointer;
+    border: 1.5px solid transparent;
+    transition: all 0.2s;
+  }
+  .nav-card:hover { transform: scale(1.03); }
+  .nav-card.venta      { background:#1a2e1a; border-color:#2d5a2d; }
+  .nav-card.inventario { background:#1a2038; border-color:#2d3d70; }
+  .nav-card.historial  { background:#2a1f10; border-color:#6b4a0e; }
+  .nav-card.reportes   { background:#1e1a2e; border-color:#4a3a70; }
+  .nav-card.active.venta      { background:#2a4a2a; border-color:var(--green); }
+  .nav-card.active.inventario { background:#1e2d5a; border-color:var(--blue); }
+  .nav-card.active.historial  { background:#3d2a10; border-color:var(--accent); }
+  .nav-card.active.reportes   { background:#2d2444; border-color:var(--violet); }
+
+  .nav-icon {
+    width: 36px; height: 36px; border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 16px;
+  }
+  .nav-card.venta .nav-icon      { background:rgba(74,222,128,0.15); }
+  .nav-card.inventario .nav-icon { background:rgba(96,165,250,0.15); }
+  .nav-card.historial .nav-icon  { background:rgba(232,160,32,0.15); }
+  .nav-card.reportes .nav-icon   { background:rgba(167,139,250,0.15); }
+
+  .nav-label { font-size: 9px; font-weight: 600; text-align: center; }
+  .nav-card.venta .nav-label      { color: var(--green); }
+  .nav-card.inventario .nav-label { color: var(--blue); }
+  .nav-card.historial .nav-label  { color: var(--accent); }
+  .nav-card.reportes .nav-label   { color: var(--violet); }
+
+  /* Content pages */
+  .page { display: none; flex: 1; padding: 20px; min-height: 420px; flex-direction: column; gap: 16px; }
+  .page.active { display: flex; }
+
+  /* Venta */
+  .venta-layout { display: flex; gap: 16px; height: 100%; }
+  .venta-main { flex: 1; display: flex; flex-direction: column; gap: 12px; }
+
+  .scan-box {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 14px;
+  }
+  .scan-label { font-size: 11px; font-weight: 600; color: var(--muted); letter-spacing: 0.06em; margin-bottom: 8px; }
+  .scan-input {
+    width: 100%;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 9px 12px;
+    color: var(--muted);
+    font-size: 13px;
+    font-family: inherit;
+    cursor: not-allowed;
+  }
+  .scan-hint { font-size: 11px; color: var(--muted); margin-top: 6px; opacity: 0.6; }
+
+  .cart-box {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    flex: 1;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+  .cart-header {
+    padding: 10px 16px;
+    border-bottom: 1px solid var(--border);
+    color: var(--muted);
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+  }
+  .cart-item {
+    display: flex;
+    align-items: center;
+    padding: 10px 16px;
+    gap: 10px;
+    border-bottom: 1px solid var(--border);
+    animation: fadeIn 0.3s ease;
+  }
+  .cart-item-name { flex: 1; font-size: 14px; color: var(--text); }
+  .cart-item-price { font-size: 12px; color: var(--muted); }
+  .cart-qty {
+    display: flex; align-items: center; gap: 6px;
+  }
+  .qty-btn {
+    width: 24px; height: 24px; border-radius: 6px;
+    background: var(--surface); border: none; color: var(--text);
+    cursor: pointer; font-size: 14px; display: flex; align-items: center; justify-content: center;
+  }
+  .cart-subtotal {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 20px;
+    color: var(--text);
+    min-width: 70px;
+    text-align: right;
+  }
+
+  /* Summary */
+  .summary-box {
+    width: 200px;
+    flex-shrink: 0;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 16px;
+  }
+  .summary-title { font-size: 11px; font-weight: 600; color: var(--muted); letter-spacing: 0.06em; margin-bottom: 14px; }
+  .summary-row { display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 13px; }
+  .summary-row span:first-child { color: var(--muted); }
+  .summary-divider { height: 1px; background: var(--border); margin: 12px 0; }
+  .summary-total-label { color: var(--text); font-size: 14px; font-weight: 600; }
+  .summary-total-value { font-family: 'Bebas Neue', sans-serif; font-size: 30px; color: var(--accent); letter-spacing: 1px; }
+  .summary-ganancia {
+    background: var(--surface); border-radius: 8px; padding: 10px 12px; margin: 12px 0;
+  }
+  .summary-ganancia-label { font-size: 11px; color: var(--muted); font-weight: 600; letter-spacing: 0.04em; margin-bottom: 4px; }
+  .summary-ganancia-value { font-family: 'Bebas Neue', sans-serif; font-size: 22px; color: var(--green); }
+  .btn-finalizar {
+    width: 100%; padding: 11px; background: var(--accent); color: #18140f;
+    border: none; border-radius: 8px; font-weight: 700; font-size: 14px;
+    cursor: pointer; font-family: inherit; transition: opacity 0.15s;
+  }
+  .btn-finalizar:hover { opacity: 0.88; }
+
+  /* Inventario */
+  .table-header {
+    display: grid;
+    grid-template-columns: 2fr 1.4fr 1fr 1fr 1fr 60px;
+    padding: 10px 16px;
+    border-bottom: 1px solid var(--border);
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--muted);
+    letter-spacing: 0.06em;
+  }
+  .table-row {
+    display: grid;
+    grid-template-columns: 2fr 1.4fr 1fr 1fr 1fr 60px;
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--border);
+    align-items: center;
+    font-size: 13px;
+  }
+  .table-row:last-child { border-bottom: none; }
+  .table-name { color: var(--text); }
+  .table-code { color: var(--muted); font-family: monospace; font-size: 12px; }
+  .table-costo { color: var(--muted); }
+  .table-pct { color: var(--accent); font-weight: 600; }
+  .table-pv { color: var(--text); font-weight: 600; }
+  .action-btns { display: flex; gap: 6px; }
+  .action-btn {
+    width: 26px; height: 26px; border-radius: 6px; border: none;
+    display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 12px;
+  }
+
+  /* Historial */
+  .boleta {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    margin-bottom: 10px;
+    overflow: hidden;
+    cursor: pointer;
+  }
+  .boleta-header {
+    padding: 12px 16px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .boleta-icon { font-size: 18px; }
+  .boleta-fecha { color: var(--text); font-size: 13px; font-weight: 500; }
+  .boleta-items { color: var(--muted); font-size: 12px; }
+  .boleta-total { margin-left: auto; text-align: right; }
+  .boleta-total-val { font-family: 'Bebas Neue', sans-serif; font-size: 20px; color: var(--accent); }
+  .boleta-ganancia-val { font-size: 12px; color: var(--green); }
+  .boleta-detail {
+    border-top: 1px solid var(--border);
+    padding: 14px 16px;
+    background: var(--surface);
+    display: none;
+  }
+  .boleta.expanded .boleta-detail { display: block; }
+  .detail-row { display: flex; justify-content: space-between; font-size: 12px; margin-bottom: 6px; }
+  .detail-row span:first-child { color: var(--muted); }
+  .detail-divider { height: 1px; background: var(--border); margin: 10px 0; }
+
+  /* Reportes */
+  .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 16px; }
+  .stat-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 16px;
+  }
+  .stat-label { font-size: 10px; font-weight: 600; color: var(--muted); letter-spacing: 0.06em; margin-bottom: 8px; }
+  .stat-value { font-family: 'Bebas Neue', sans-serif; font-size: 28px; letter-spacing: 1px; margin-bottom: 3px; }
+  .stat-sub { font-size: 11px; color: var(--muted); }
+  .chart-box {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 16px;
+  }
+  .chart-title { font-size: 11px; font-weight: 600; color: var(--muted); letter-spacing: 0.06em; margin-bottom: 16px; }
+  .chart-bars { display: flex; align-items: flex-end; gap: 8px; height: 100px; }
+  .bar-group { display: flex; gap: 3px; align-items: flex-end; flex: 1; flex-direction: column; }
+  .bar-wrap { display: flex; gap: 3px; align-items: flex-end; width: 100%; justify-content: center; }
+  .bar { border-radius: 4px 4px 0 0; transition: height 0.4s ease; }
+  .chart-labels { display: flex; justify-content: space-around; margin-top: 8px; }
+  .chart-label { font-size: 10px; color: var(--muted); text-align: center; flex: 1; }
+
+  /* ── FEATURES ── */
+  .features-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 20px;
+  }
+  .feature-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 28px;
+    transition: transform 0.2s, border-color 0.2s;
+  }
+  .feature-card:hover { transform: translateY(-3px); }
+  .feature-card.green:hover { border-color: rgba(74,222,128,0.4); }
+  .feature-card.blue:hover  { border-color: rgba(96,165,250,0.4); }
+  .feature-card.amber:hover { border-color: rgba(232,160,32,0.4); }
+  .feature-card.violet:hover{ border-color: rgba(167,139,250,0.4); }
+
+  .feature-icon {
+    width: 44px; height: 44px; border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 20px; margin-bottom: 16px;
+  }
+  .green .feature-icon  { background: rgba(74,222,128,0.12); }
+  .blue .feature-icon   { background: rgba(96,165,250,0.12); }
+  .amber .feature-icon  { background: rgba(232,160,32,0.12); }
+  .violet .feature-icon { background: rgba(167,139,250,0.12); }
+
+  .feature-title { font-family: 'Syne', sans-serif; font-size: 18px; font-weight: 700; margin-bottom: 10px; }
+  .feature-desc  { color: var(--muted); font-size: 14px; line-height: 1.65; }
+
+  /* ── TECH STACK ── */
+  .stack-grid {
+    display: flex; flex-wrap: wrap; gap: 12px;
+  }
+  .stack-item {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 14px 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 14px;
+    color: var(--text);
+    font-weight: 500;
+  }
+  .stack-dot { width: 8px; height: 8px; border-radius: 50%; }
+
+  /* ── FOOTER ── */
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 40px 24px;
+    text-align: center;
+    color: var(--muted);
+    font-size: 14px;
+  }
+  .footer-name { font-family: 'Syne', sans-serif; font-size: 20px; font-weight: 800; color: var(--text); margin-bottom: 8px; }
+  .footer-links { display: flex; gap: 20px; justify-content: center; margin-top: 20px; }
+  .footer-link {
+    color: var(--accent); text-decoration: none; font-size: 14px; font-weight: 600;
+    border-bottom: 1px solid rgba(232,160,32,0.3); padding-bottom: 2px;
+    transition: border-color 0.2s;
+  }
+  .footer-link:hover { border-color: var(--accent); }
+
+  /* ── ANIMATIONS ── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes fadeIn {
+    from { opacity: 0; } to { opacity: 1; }
+  }
+  @keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50%       { transform: translateY(6px); }
+  }
+
+  /* divider */
+  .full-divider { height: 1px; background: var(--border); margin: 0; }
+</style>
+</head>
+<body>
+
+<!-- ── HERO ── -->
+<div class="hero">
+  <div class="hero-badge">🇨🇱 Proyecto para almacén de barrio chileno</div>
+  <div class="hero-title">AlmacénOS</div>
+  <div class="hero-sub">Software de Punto de Venta · v0.2</div>
+  <p class="hero-desc">
+    Aplicación de escritorio para gestión de ventas, inventario y reportes,
+    desarrollada con tecnologías web modernas y empaquetada como ejecutable Windows.
+  </p>
+  <div class="hero-tags">
+    <span class="tag green">React + Vite</span>
+    <span class="tag green">Electron</span>
+    <span class="tag blue">localStorage</span>
+    <span class="tag blue">Recharts</span>
+    <span class="tag">Lucide Icons</span>
+    <span class="tag">JavaScript</span>
+  </div>
+  <div class="scroll-hint">
+    <span>Explorar demo</span>
+    <div class="scroll-dot"></div>
+  </div>
+</div>
+
+<div class="full-divider"></div>
+
+<!-- ── APP DEMO ── -->
+<section>
+  <div class="section-label">DEMO INTERACTIVA</div>
+  <h2 class="section-title">Prueba la aplicación</h2>
+  <p class="section-desc">Navega entre las secciones para ver el funcionamiento real de cada módulo.</p>
+
+  <div class="app-shell">
+    <!-- Topbar -->
+    <div class="app-topbar">
+      <div class="dot" style="background:#f87171"></div>
+      <div class="dot" style="background:#fbbf24"></div>
+      <div class="dot" style="background:#4ade80"></div>
+      <span style="margin-left:12px; font-size:12px; color:var(--muted);">AlmacénOS v0.2</span>
+    </div>
+
+    <!-- Body -->
+    <div class="app-body">
+
+      <!-- Sidebar -->
+      <div class="app-sidebar">
+        <div class="app-brand">
+          <div class="app-brand-name">AlmacénOS</div>
+          <div class="app-brand-sub">Punto de Venta</div>
+        </div>
+        <div class="nav-card venta active" onclick="switchPage('venta', this)">
+          <div class="nav-icon">🛒</div>
+          <div class="nav-label">Nueva Venta</div>
+        </div>
+        <div class="nav-card inventario" onclick="switchPage('inventario', this)">
+          <div class="nav-icon">📦</div>
+          <div class="nav-label">Inventario</div>
+        </div>
+        <div class="nav-card historial" onclick="switchPage('historial', this)">
+          <div class="nav-icon">🧾</div>
+          <div class="nav-label">Historial</div>
+        </div>
+        <div class="nav-card reportes" onclick="switchPage('reportes', this)">
+          <div class="nav-icon">📊</div>
+          <div class="nav-label">Reportes</div>
+        </div>
+      </div>
+
+      <!-- Pages -->
+
+      <!-- VENTA -->
+      <div class="page active" id="page-venta">
+        <div class="venta-layout">
+          <div class="venta-main">
+            <div class="scan-box">
+              <div class="scan-label">📡 ESCANEAR CÓDIGO DE BARRA</div>
+              <input class="scan-input" value="Pistolée o escribe el código y presiona Enter…" readonly/>
+              <div class="scan-hint">La pistola USB funciona automáticamente como teclado.</div>
+            </div>
+            <div class="cart-box">
+              <div class="cart-header">🛒 PRODUCTOS (3) &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; CANTIDAD</div>
+              <div class="cart-item">
+                <div style="flex:1">
+                  <div class="cart-item-name">Coca-Cola 500ml</div>
+                  <div class="cart-item-price">$1.100 c/u</div>
+                </div>
+                <div class="cart-qty">
+                  <button class="qty-btn">−</button>
+                  <span style="color:var(--text);font-size:15px;min-width:20px;text-align:center">2</span>
+                  <button class="qty-btn">+</button>
+                </div>
+                <div class="cart-subtotal">$2.200</div>
+              </div>
+              <div class="cart-item">
+                <div style="flex:1">
+                  <div class="cart-item-name">Pan Hallulla (unidad)</div>
+                  <div class="cart-item-price">$250 c/u</div>
+                </div>
+                <div class="cart-qty">
+                  <button class="qty-btn">−</button>
+                  <span style="color:var(--text);font-size:15px;min-width:20px;text-align:center">5</span>
+                  <button class="qty-btn">+</button>
+                </div>
+                <div class="cart-subtotal">$1.250</div>
+              </div>
+              <div class="cart-item">
+                <div style="flex:1">
+                  <div class="cart-item-name">Leche Colun 1L</div>
+                  <div class="cart-item-price">$1.290 c/u</div>
+                </div>
+                <div class="cart-qty">
+                  <button class="qty-btn">−</button>
+                  <span style="color:var(--text);font-size:15px;min-width:20px;text-align:center">1</span>
+                  <button class="qty-btn">+</button>
+                </div>
+                <div class="cart-subtotal">$1.290</div>
+              </div>
+            </div>
+          </div>
+          <div class="summary-box">
+            <div class="summary-title">RESUMEN</div>
+            <div class="summary-row"><span>Neto</span><span>$3.991</span></div>
+            <div class="summary-row"><span>IVA (19%)</span><span>$758</span></div>
+            <div class="summary-divider"></div>
+            <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:14px">
+              <span class="summary-total-label">Total</span>
+              <span class="summary-total-value">$4.740</span>
+            </div>
+            <div class="summary-ganancia">
+              <div class="summary-ganancia-label">GANANCIA ESTIMADA</div>
+              <div class="summary-ganancia-value">$1.020</div>
+            </div>
+            <button class="btn-finalizar">Finalizar Venta</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- INVENTARIO -->
+      <div class="page" id="page-inventario" style="padding:0">
+        <div style="background:var(--card);border:1px solid var(--border);border-radius:10px;margin:20px;overflow:hidden;flex:1">
+          <div class="table-header">
+            <span>PRODUCTO</span><span>CÓDIGO</span><span>COSTO</span><span>% GANANCIA</span><span>P. VENTA</span><span></span>
+          </div>
+          <div class="table-row">
+            <span class="table-name">Coca-Cola 500ml</span>
+            <span class="table-code">7801234001</span>
+            <span class="table-costo">$850</span>
+            <span class="table-pct">29%</span>
+            <span class="table-pv">$1.100</span>
+            <div class="action-btns">
+              <button class="action-btn" style="background:var(--surface);color:var(--muted)">✏️</button>
+              <button class="action-btn" style="background:#2d1515;color:var(--red)">🗑</button>
+            </div>
+          </div>
+          <div class="table-row">
+            <span class="table-name">Pan Hallulla (unidad)</span>
+            <span class="table-code">7802345002</span>
+            <span class="table-costo">$180</span>
+            <span class="table-pct">39%</span>
+            <span class="table-pv">$250</span>
+            <div class="action-btns">
+              <button class="action-btn" style="background:var(--surface);color:var(--muted)">✏️</button>
+              <button class="action-btn" style="background:#2d1515;color:var(--red)">🗑</button>
+            </div>
+          </div>
+          <div class="table-row">
+            <span class="table-name">Leche Colun 1L</span>
+            <span class="table-code">7803456003</span>
+            <span class="table-costo">$980</span>
+            <span class="table-pct">32%</span>
+            <span class="table-pv">$1.290</span>
+            <div class="action-btns">
+              <button class="action-btn" style="background:var(--surface);color:var(--muted)">✏️</button>
+              <button class="action-btn" style="background:#2d1515;color:var(--red)">🗑</button>
+            </div>
+          </div>
+          <div class="table-row">
+            <span class="table-name">Nescafé Tarro 170g</span>
+            <span class="table-code">7804567004</span>
+            <span class="table-costo">$3.200</span>
+            <span class="table-pct">25%</span>
+            <span class="table-pv">$3.990</span>
+            <div class="action-btns">
+              <button class="action-btn" style="background:var(--surface);color:var(--muted)">✏️</button>
+              <button class="action-btn" style="background:#2d1515;color:var(--red)">🗑</button>
+            </div>
+          </div>
+          <div class="table-row">
+            <span class="table-name">Detergente Omo 500g</span>
+            <span class="table-code">7805678005</span>
+            <span class="table-costo">$1.800</span>
+            <span class="table-pct">33%</span>
+            <span class="table-pv">$2.390</span>
+            <div class="action-btns">
+              <button class="action-btn" style="background:var(--surface);color:var(--muted)">✏️</button>
+              <button class="action-btn" style="background:#2d1515;color:var(--red)">🗑</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- HISTORIAL -->
+      <div class="page" id="page-historial" style="overflow-y:auto">
+        <div style="font-family:'Syne',sans-serif;font-size:18px;font-weight:700;margin-bottom:4px">Historial de Boletas</div>
+
+        <div class="boleta expanded" onclick="this.classList.toggle('expanded')">
+          <div class="boleta-header">
+            <div class="boleta-icon">🧾</div>
+            <div>
+              <div class="boleta-fecha">27/03/2026, 14:32</div>
+              <div class="boleta-items">3 producto(s)</div>
+            </div>
+            <div class="boleta-total">
+              <div class="boleta-total-val">$4.740</div>
+              <div class="boleta-ganancia-val">+$1.020 ganancia</div>
+            </div>
+          </div>
+          <div class="boleta-detail">
+            <div class="detail-row"><span>2× Coca-Cola 500ml</span><span>$2.200</span></div>
+            <div class="detail-row"><span>5× Pan Hallulla</span><span>$1.250</span></div>
+            <div class="detail-row"><span>1× Leche Colun 1L</span><span>$1.290</span></div>
+            <div class="detail-divider"></div>
+            <div class="detail-row"><span>Neto</span><span>$3.991</span></div>
+            <div class="detail-row"><span>IVA (19%)</span><span>$758</span></div>
+            <div class="detail-row" style="font-size:14px;font-weight:700"><span style="color:var(--text)">Total</span><span style="color:var(--accent)">$4.740</span></div>
+            <div class="detail-row"><span>Ganancia</span><span style="color:var(--green);font-weight:600">$1.020</span></div>
+          </div>
+        </div>
+
+        <div class="boleta" onclick="this.classList.toggle('expanded')">
+          <div class="boleta-header">
+            <div class="boleta-icon">🧾</div>
+            <div>
+              <div class="boleta-fecha">27/03/2026, 11:15</div>
+              <div class="boleta-items">2 producto(s)</div>
+            </div>
+            <div class="boleta-total">
+              <div class="boleta-total-val">$6.380</div>
+              <div class="boleta-ganancia-val">+$1.490 ganancia</div>
+            </div>
+          </div>
+          <div class="boleta-detail">
+            <div class="detail-row"><span>1× Nescafé Tarro 170g</span><span>$3.990</span></div>
+            <div class="detail-row"><span>1× Detergente Omo 500g</span><span>$2.390</span></div>
+            <div class="detail-divider"></div>
+            <div class="detail-row"><span>Neto</span><span>$5.361</span></div>
+            <div class="detail-row"><span>IVA (19%)</span><span>$1.019</span></div>
+            <div class="detail-row" style="font-size:14px;font-weight:700"><span style="color:var(--text)">Total</span><span style="color:var(--accent)">$6.380</span></div>
+            <div class="detail-row"><span>Ganancia</span><span style="color:var(--green);font-weight:600">$1.490</span></div>
+          </div>
+        </div>
+
+        <div class="boleta" onclick="this.classList.toggle('expanded')">
+          <div class="boleta-header">
+            <div class="boleta-icon">🧾</div>
+            <div>
+              <div class="boleta-fecha">26/03/2026, 18:45</div>
+              <div class="boleta-items">1 producto(s)</div>
+            </div>
+            <div class="boleta-total">
+              <div class="boleta-total-val">$2.200</div>
+              <div class="boleta-ganancia-val">+$500 ganancia</div>
+            </div>
+          </div>
+          <div class="boleta-detail">
+            <div class="detail-row"><span>2× Coca-Cola 500ml</span><span>$2.200</span></div>
+            <div class="detail-divider"></div>
+            <div class="detail-row"><span>Neto</span><span>$1.849</span></div>
+            <div class="detail-row"><span>IVA (19%)</span><span>$351</span></div>
+            <div class="detail-row" style="font-size:14px;font-weight:700"><span style="color:var(--text)">Total</span><span style="color:var(--accent)">$2.200</span></div>
+            <div class="detail-row"><span>Ganancia</span><span style="color:var(--green);font-weight:600">$500</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- REPORTES -->
+      <div class="page" id="page-reportes">
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-label">VENTAS TOTALES HOY</div>
+            <div class="stat-value" style="color:var(--accent)">$11.120</div>
+            <div class="stat-sub">2 transacciones</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">GANANCIA NETA</div>
+            <div class="stat-value" style="color:var(--green)">$2.510</div>
+            <div class="stat-sub">22% sobre ventas</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">IVA ACUMULADO</div>
+            <div class="stat-value" style="color:var(--red)">$1.777</div>
+            <div class="stat-sub">19% incluido en ventas</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-label">COSTO DE LO VENDIDO</div>
+            <div class="stat-value" style="color:var(--text)">$8.610</div>
+            <div class="stat-sub">&nbsp;</div>
+          </div>
+        </div>
+        <div class="chart-box">
+          <div class="chart-title">VENTAS Y GANANCIA — ÚLTIMOS 7 DÍAS</div>
+          <div class="chart-bars">
+            <div class="bar-wrap"><div class="bar" style="width:14px;height:40px;background:#6b4a0e"></div><div class="bar" style="width:14px;height:10px;background:var(--accent)"></div></div>
+            <div class="bar-wrap"><div class="bar" style="width:14px;height:55px;background:#6b4a0e"></div><div class="bar" style="width:14px;height:14px;background:var(--accent)"></div></div>
+            <div class="bar-wrap"><div class="bar" style="width:14px;height:30px;background:#6b4a0e"></div><div class="bar" style="width:14px;height:8px;background:var(--accent)"></div></div>
+            <div class="bar-wrap"><div class="bar" style="width:14px;height:70px;background:#6b4a0e"></div><div class="bar" style="width:14px;height:18px;background:var(--accent)"></div></div>
+            <div class="bar-wrap"><div class="bar" style="width:14px;height:45px;background:#6b4a0e"></div><div class="bar" style="width:14px;height:12px;background:var(--accent)"></div></div>
+            <div class="bar-wrap"><div class="bar" style="width:14px;height:80px;background:#6b4a0e"></div><div class="bar" style="width:14px;height:22px;background:var(--accent)"></div></div>
+            <div class="bar-wrap"><div class="bar" style="width:14px;height:100px;background:#6b4a0e"></div><div class="bar" style="width:14px;height:28px;background:var(--accent)"></div></div>
+          </div>
+          <div class="chart-labels">
+            <span class="chart-label">Lun</span>
+            <span class="chart-label">Mar</span>
+            <span class="chart-label">Mié</span>
+            <span class="chart-label">Jue</span>
+            <span class="chart-label">Vie</span>
+            <span class="chart-label">Sáb</span>
+            <span class="chart-label">Hoy</span>
+          </div>
+          <div style="display:flex;gap:20px;margin-top:12px">
+            <div style="display:flex;align-items:center;gap:6px;font-size:12px;color:var(--muted)"><div style="width:10px;height:10px;background:#6b4a0e;border-radius:2px"></div>Ventas totales</div>
+            <div style="display:flex;align-items:center;gap:6px;font-size:12px;color:var(--muted)"><div style="width:10px;height:10px;background:var(--accent);border-radius:2px"></div>Ganancia</div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- end app-body -->
+  </div><!-- end app-shell -->
+</section>
+
+<div class="full-divider"></div>
+
+<!-- ── FEATURES ── -->
+<section>
+  <div class="section-label">FUNCIONALIDADES</div>
+  <h2 class="section-title">¿Qué hace AlmacénOS?</h2>
+  <p class="section-desc">Diseñado específicamente para el flujo de trabajo de un almacén de barrio chileno.</p>
+
+  <div class="features-grid">
+    <div class="feature-card green">
+      <div class="feature-icon">🛒</div>
+      <div class="feature-title">Módulo de Venta</div>
+      <div class="feature-desc">Escaneo de códigos de barra con pistola USB o teclado. Cálculo automático de IVA (19%) y ganancia en tiempo real.</div>
+    </div>
+    <div class="feature-card blue">
+      <div class="feature-icon">📦</div>
+      <div class="feature-title">Gestión de Inventario</div>
+      <div class="feature-desc">Agrega y edita productos con código de barra, precio de costo y porcentaje de ganancia. Precio de venta calculado automáticamente.</div>
+    </div>
+    <div class="feature-card amber">
+      <div class="feature-icon">🧾</div>
+      <div class="feature-title">Historial de Boletas</div>
+      <div class="feature-desc">Registro completo de cada venta con detalle de productos, IVA, total y ganancia. Expandible con un clic.</div>
+    </div>
+    <div class="feature-card violet">
+      <div class="feature-icon">📊</div>
+      <div class="feature-title">Reportes</div>
+      <div class="feature-desc">Estadísticas de ventas, ganancia neta e IVA acumulado del día y del mes, con gráfico de barras de los últimos 7 días.</div>
+    </div>
+  </div>
+</section>
+
+<div class="full-divider"></div>
+
+<!-- ── STACK ── -->
+<section>
+  <div class="section-label">TECNOLOGÍAS</div>
+  <h2 class="section-title">Stack utilizado</h2>
+  <p class="section-desc">100% gratuito y open source. Elegido para maximizar el aprendizaje y la empleabilidad.</p>
+
+  <div class="stack-grid">
+    <div class="stack-item"><div class="stack-dot" style="background:#4ade80"></div>React 19</div>
+    <div class="stack-item"><div class="stack-dot" style="background:#60a5fa"></div>Vite 8</div>
+    <div class="stack-item"><div class="stack-dot" style="background:#f87171"></div>Electron 41</div>
+    <div class="stack-item"><div class="stack-dot" style="background:#a78bfa"></div>Recharts</div>
+    <div class="stack-item"><div class="stack-dot" style="background:#fbbf24"></div>Lucide Icons</div>
+    <div class="stack-item"><div class="stack-dot" style="background:#e8a020"></div>localStorage</div>
+    <div class="stack-item"><div class="stack-dot" style="background:#4ade80"></div>electron-builder</div>
+    <div class="stack-item"><div class="stack-dot" style="background:#b8a898"></div>JavaScript (JSX)</div>
+  </div>
+</section>
+
+<div class="full-divider"></div>
+
+<!-- ── FOOTER ── -->
+<footer>
+  <div class="footer-name">AlmacénOS</div>
+  <div>Proyecto personal · Ingeniería en Informática · 2026</div>
+  <div class="footer-links">
+    <a href="https://github.com/Sirious4k/ad-almacen-os" target="_blank" class="footer-link">Ver en GitHub →</a>
+  </div>
+</footer>
+
+<script>
+  function switchPage(id, el) {
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.nav-card').forEach(n => n.classList.remove('active'));
+    document.getElementById('page-' + id).classList.add('active');
+    el.classList.add('active');
+  }
+</script>
+</body>
+</html>
