@@ -4,9 +4,8 @@ Aplicación de escritorio para punto de venta y gestión de inventario, diseñad
 
 ---
 
-## 📸 Capturas de pantalla
-
-> 🔜 Próximamente
+## Demo
+### Prueba la demo que se encuentra dentro de la carpeta raíz: almacen-demo.html
 
 ---
 
